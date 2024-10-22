@@ -1,5 +1,3 @@
-\c winery_app_db;
-
 INSERT INTO users (first_name, last_name, email, manager_id) VALUES 
   ('Bob', 'Smith', 'bob@test.com', null),
   ('Jane', 'Doe', 'jane@test.com', null),

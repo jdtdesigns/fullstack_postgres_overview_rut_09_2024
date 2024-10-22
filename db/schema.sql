@@ -1,9 +1,6 @@
-\c postgres;
-
-DROP DATABASE IF EXISTS winery_app_db;
-CREATE DATABASE winery_app_db;
-
-\c winery_app_db;
+DROP TABLE IF EXISTS wines;
+DROP TABLE IF EXISTS shops;
+DROP TABLE IF EXISTS users;
 
 CREATE TABLE users (
   id SERIAL PRIMARY KEY,
