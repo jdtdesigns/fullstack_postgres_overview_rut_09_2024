@@ -1,23 +1,21 @@
 {
-  "name": "example",
+  "name": "fullstack_postgres",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "type": "module",
   "scripts": {
-    "build": "tsc && node ./dist/index.js",
-    "start": "node dist/index.js",
-    "seed": "tsc && node ./dist/config/seed.js"
+    "client:install": "cd ./client && npm i",
+    "client:dev": "cd ./client && npm run dev",
+    "server:install": "cd ./server && npm i",
+    "server:watch": "cd ./server && npm run watch",
+    "server:dev": "cd ./server && npm run dev",
+    "dev": "concurrently \"npm run server:watch\" \"npm run server:dev\" \"npm run client:dev\"",
+    "start": "node ./server/dist/server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/pg": "^8.11.10"
-  },
-  "dependencies": {
-    "console.table": "^0.10.0",
-    "inquirer": "^12.0.0",
-    "pg": "^8.13.0"
+    "concurrently": "^9.0.1"
   }
 }
