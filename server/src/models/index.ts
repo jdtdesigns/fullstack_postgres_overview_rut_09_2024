@@ -4,40 +4,23 @@ import User from './User.js';
 import Shop from './Shop.js';
 import Wine from './Wine.js';
 
-
-const UserModel = User(client);
-const ShopModel = Shop(client);
-const WineModel = Wine(client);
-
 // // One To Many Relationships
-UserModel.hasMany(ShopModel);
-ShopModel.belongsTo(UserModel);
+// User can have many associated shops and a shop belongs to a single user
+User.hasMany(Shop, { foreignKey: 'user_id' });
+Shop.belongsTo(User, { foreignKey: 'user_id' });
 
-ShopModel.hasMany(WineModel);
-WineModel.belongsTo(ShopModel);
+// Shop can have many wines and a wine belongs to a single shop
+Shop.hasMany(Wine, { foreignKey: 'shop_id' });
+Wine.belongsTo(Shop, { foreignKey: 'shop_id' });
 
-UserModel.hasMany(WineModel);
-WineModel.belongsTo(UserModel);
+// User can have many wines and a wine belongs to a single user
+User.hasMany(Wine, { foreignKey: 'user_id' });
+Wine.belongsTo(User, { foreignKey: 'user_id' });
 
 // Create the manager association
-UserModel.hasOne(UserModel, { foreignKey: 'managerId', as: 'manager' });
-UserModel.belongsTo(UserModel, { foreignKey: 'managerId', as: 'employee' });
+// User can have one manager but a manager could belong to(or be attached to) any user
+User.hasOne(User, { foreignKey: 'manager_id', as: 'manager' });
+User.belongsTo(User, { foreignKey: 'manager_id', as: 'employee' });
 
 
-export default client;
-
-// // Declare Associations
-
-// // One To Many Relationships
-// User.hasMany(ShopModel);
-// ShopModel.belongsTo(User);
-
-// Shop.hasMany(Wine);
-// Wine.belongsTo(Shop);
-
-// User.hasMany(Wine);
-// Wine.belongsTo(User);
-
-// // Create the manager association
-// User.hasOne(User, { foreignKey: 'managerId', as: 'manager' });
-// User.belongsTo(User, { foreignKey: 'managerId', as: 'employee' });
+export {client, User, Shop, Wine};

@@ -1,19 +1,24 @@
 import { DataTypes, Model } from 'sequelize';
-export default function Shop(client) {
-    class Shop extends Model {
-    }
-    Shop.init({
-        // Model attributes are defined here
-        name: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-        address: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-    }, {
-        sequelize: client
-    });
-    return Shop;
+import client from '../config/connection.js';
+class Shop extends Model {
 }
+Shop.init({
+    id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
+    },
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    address: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+}, {
+    sequelize: client,
+    tableName: 'shops',
+    underscored: true
+});
+export default Shop;

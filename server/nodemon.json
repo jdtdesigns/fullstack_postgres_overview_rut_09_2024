@@ -6,5 +6,5 @@
   "ignore": [
     "dist"
   ],
-  "exec": "node dist/server.js"
+  "exec": "tsc && node dist/server.js"
 }
