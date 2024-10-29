@@ -1,5 +1,5 @@
 import express from 'express';
-import client from './config/connection.js';
+import client from './models/index.js';
 
 const app = express();
 const PORT = process.env.PORT || 3333;
@@ -14,6 +14,10 @@ const PORT = process.env.PORT || 3333;
 // await User.sync({force: true});
 
 
-await client.sync({force: true});
+try {
+  await client.sync({ force: true });
+} catch (error) {
+  console.log(error);
+}
 
 app.listen(PORT, () => console.log('Express server started'));

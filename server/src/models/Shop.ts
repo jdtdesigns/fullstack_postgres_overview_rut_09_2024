@@ -1,32 +1,25 @@
-import { DataTypes, Model } from 'sequelize';
-import client from '../config/connection.js';
+import { DataTypes, Model, Sequelize } from 'sequelize';
 
-interface ShopAttributes {
-  name: string;
-  address: string;
-}
+export default function Shop(client: Sequelize) {
+  class Shop extends Model {}
 
-class Shop extends Model<ShopAttributes> implements ShopAttributes {
-  public name!: string;
-  public address!: string;
-}
-
-Shop.init(
-  {
-    // Model attributes are defined here
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false
+  Shop.init(
+    {
+      // Model attributes are defined here
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+      address: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
     },
-    address: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-  },
+    
+    {
+      sequelize: client
+    }
+  )
 
-  {
-    sequelize: client
-  }
-);
-
-export default Shop;
+  return Shop;
+}
