@@ -75,11 +75,11 @@ async function seedManagers() {
         userData.push(user);
     }
     // @ts-ignore
+    // A for of loop lets us run asynchronous code within the code block, whereas other loops (including forEach) do not
     for (const [index, user] of userData.entries()) {
-        const result = await user.update({
+        await user.update({
             manager_id: managerData[index].id
         });
-        console.log('RESULT', result);
     }
 }
 try {
