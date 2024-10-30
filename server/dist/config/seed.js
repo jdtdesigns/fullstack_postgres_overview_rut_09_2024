@@ -1,15 +1,18 @@
 import { faker } from '@faker-js/faker';
 import { client } from '../models/index.js';
 import { User, Shop, Wine } from '../models/index.js';
+// Recreate all of the tables, using our models - erases all previous data
 await client.sync({ force: true });
 async function seedUsers() {
     const userData = [];
     let amount = 10;
     while (amount--) {
+        const first_name = faker.person.firstName();
+        const last_name = faker.person.lastName();
         userData.push({
-            first_name: faker.person.firstName(),
-            last_name: faker.person.lastName(),
-            email: faker.internet.email(),
+            first_name: first_name,
+            last_name: last_name,
+            email: `${first_name.toLowerCase()}.${last_name.toLowerCase()}@test.com`,
             password: 'password123',
             // Generate a number between 15 and 100 for the age
             age: Math.floor(Math.random() * (100 - 15 + 1)) + 15
@@ -47,7 +50,7 @@ async function seedWines() {
             price: faker.finance.amount(),
             shop_id: randomShop.id,
             // @ts-ignore
-            user_id: randomShop.UserId
+            user_id: randomShop.user_id
         });
     }
     // @ts-ignore

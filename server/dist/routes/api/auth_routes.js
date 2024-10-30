@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { createToken, verifyToken } from '../helpers/index.js';
 import { User } from '../../models/index.js';
 const router = Router();
+// localhost:3333/auth/register
 router.post('/register', async (req, res) => {
     try {
         const user = await User.create(req.body);
@@ -10,19 +11,28 @@ router.post('/register', async (req, res) => {
         // Send the token inside of a cookie to the client/browser
         // It will be stored in browser/insomnia memory and can be viewed through the Dev Tools Application tab
         res.cookie('token', token, {
+            // Keep the cookie from being accessed by browser JS
             httpOnly: true
         });
         // Send back the user object
         res.json({
-            user
+            user: user
         });
     }
     catch (error) {
-        console.log('register error', error);
-        res.status(403).json({
-            user: null,
-            message: 'Registration failed. Please try again.'
-        });
+        // console.log('REGISTER ERROR', error);
+        if (error.errors) {
+            res.status(403).json({
+                user: null,
+                message: error.errors[0].message
+            });
+        }
+        else {
+            res.status(403).json({
+                user: null,
+                message: 'Registration failed. Please try again.'
+            });
+        }
     }
 });
 router.post('/login', async (req, res) => {
@@ -47,7 +57,6 @@ router.post('/login', async (req, res) => {
         // This compares the form password they typed (ie. 'password123') to an ecrypted string
         // If they match up then validatePassword returns a true boolean
         const valid_pass = await user.validatePassword(password);
-        console.log(valid_pass);
         if (!valid_pass) {
             res.status(403).json({
                 user: null,

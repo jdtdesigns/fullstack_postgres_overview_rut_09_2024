@@ -5,6 +5,7 @@ import { isAuthenticated } from '../helpers/index.js';
 const router = Router();
 
 // Get user shops
+// localhost:3333/api/shops/user
 router.get('/shops/user', isAuthenticated, async(req: Request, res: Response) => {
   const userShops = await Shop.findAll({
     where: {

@@ -1,6 +1,31 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { useStore } from '../store';
+import { ReactEventHandler } from 'react';
+import axios from 'axios';
 
 function Header() {
+  const store = useStore();
+  const navigate = useNavigate();
+
+  if (!store) {
+    throw new Error('Store is not available');
+  }
+
+  const {state, setState} = store;
+
+  const logoutUser: ReactEventHandler<HTMLAnchorElement> = async (event) => {
+    event.preventDefault();
+    
+    await axios.get('/auth/logout');
+
+    setState(oldState => ({
+      ...oldState,
+      user: null
+    }));
+
+    navigate('/');
+  }
+
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
       <div className="container-fluid">
@@ -9,13 +34,24 @@ function Header() {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
-          <div className="navbar-nav ms-auto">
+          <div className="navbar-nav ms-auto d-flex align-items-center">
+            {state.user && <p className="m-0 pe-4 align-middle">Welcome, {state.user.first_name}</p>}
+
             <NavLink className="nav-link" to="/">Home</NavLink>
-            <NavLink className="nav-link" to="/shops">Shops</NavLink>
-            <NavLink className="nav-link" to="/shops/create">Create Shop</NavLink>
-            <NavLink className="nav-link" to="/wines/add">Add a Wine</NavLink>
-            <NavLink className="nav-link" to="/register">Sign Up</NavLink>
-            <NavLink className="nav-link" to="/login">Sign In</NavLink>
+
+            {state.user ? (
+              <>
+                <NavLink className="nav-link" to="/shops">View Your Shops</NavLink>
+                <NavLink className="nav-link" to="/shops/create">Create Shop</NavLink>
+                <NavLink className="nav-link" to="/wines/add">Add a Wine</NavLink>
+                <a onClick={logoutUser} className="nav-link" href="/auth/logout">Log Out</a>
+              </>
+            ) : (
+              <>
+                <NavLink className="nav-link" to="/login">Sign In</NavLink>
+                <NavLink className="nav-link" to="/register">Sign Up</NavLink>
+              </>
+            )}
           </div>
         </div>
       </div>

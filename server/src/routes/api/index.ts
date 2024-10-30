@@ -6,6 +6,8 @@ import user_routes from './user_routes.js';
 
 const router = Router();
 
+// Prefix the auth routes with /auth
+// ie http://localhost:3333/auth/ROUTES_BEGIN_HERE
 router.use('/auth', auth_routes);
 router.use('/api', [public_routes, user_routes]);
 

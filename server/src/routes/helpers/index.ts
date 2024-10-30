@@ -1,28 +1,37 @@
 import jsonwebtoken from 'jsonwebtoken';
 import { Request, Response, NextFunction, RequestHandler } from 'express';
+import dotenv from 'dotenv';
+
 import { User } from '../../models/index.js';
 
-const {sign, verify} = jsonwebtoken
+dotenv.config();
+
+const {sign, verify} = jsonwebtoken;
 
 export function verifyToken(token: string) {
   try {
-    const data = verify(token, 'some secret');
+    const data = verify(token, process.env.JWT_SECRET!);
 
     return data;
   } catch (error) {
-    console.log('verify token error', error);
+    console.log('VERIFY TOKEN ERROR - JWT', error);
     return false;
   }
 }
 
 export function createToken(user_id: number) {
-  const token = sign({ user_id }, 'some secret');
+  try {
+    const token = sign({ user_id: user_id }, process.env.JWT_SECRET!);
 
-  return token;
+    return token;
+  } catch (error) {
+    console.log('CREATE TOKEN ERROR - JWT');
+    throw error;
+  }
 }
 
 export const isAuthenticated: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
-  const token = req?.cookies?.token;
+  const token = req.cookies?.token;
 
   if (!token) {
     res.status(401).json({
@@ -31,10 +40,10 @@ export const isAuthenticated: RequestHandler = async (req: Request, res: Respons
     return;
   }
 
-  const tokenData = verifyToken(token);
+  const userData = verifyToken(token);
 
-  if (tokenData && typeof tokenData !== 'string') {
-    const { user_id } = tokenData as { user_id: number };
+  if (userData && typeof userData !== 'string') {
+    const { user_id } = userData as { user_id: number };
     const user = await User.findByPk(user_id);
     req.user = user;
 

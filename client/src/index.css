@@ -5,3 +5,13 @@ nav a.active, nav a:hover {
 .navbar-brand {
   text-decoration: none !important;
 }
+
+div.loading {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: #fff;
+  z-index: 100;
+}

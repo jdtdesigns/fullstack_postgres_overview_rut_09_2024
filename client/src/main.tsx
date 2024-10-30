@@ -5,11 +5,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import './index.css'
 import App from './App.tsx'
+import { StoreProvider } from './store';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <StoreProvider>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </StoreProvider>
   </StrictMode>,
 )

@@ -11,6 +11,7 @@ interface UserAttributes {
   email: string;
   password?: string;
   age: number;
+  full_name?: string;
 }
 
 class User extends Model<UserAttributes> implements UserAttributes {
@@ -20,14 +21,16 @@ class User extends Model<UserAttributes> implements UserAttributes {
   public email!: string;
   public password!: string;
   public age!: number;
+  public full_name?: string;
 
   public async validatePassword(formPassword: string): Promise<boolean> {
-    console.log(this.password, formPassword);
     const is_valid = await compare(formPassword, this.password);
     return is_valid;
   }
 
+  // This is a built in method that we are overriding - Polymorphism
   toJSON() {
+    // Create a copy of the user instance object
     const user = Object.assign({}, this.get());
     delete user.password;
 
@@ -37,6 +40,7 @@ class User extends Model<UserAttributes> implements UserAttributes {
 
 User.init(
   {
+    // id SERIAL PRIMARY KEY
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -55,22 +59,40 @@ User.init(
     email: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: {
+        name: 'unique_email',
+        msg: 'That email address is already in use'
+      },
       validate: {
-        isEmail: true
+        isEmail: {
+          msg: 'You must provide a valid email address'
+        }
       }
     },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        len: [6, Infinity] // Ensure they type at least 6 characters for the password
+        len: {
+          args: [6, Infinity],
+          msg: 'Your password must be at least 6 characters in length'
+        } // Ensure they type at least 6 characters for the password
       }
     },
     age: {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
-        min: 21
+        min: {
+          args: [21],
+          msg: 'You must be at least 21 years old to register an account'
+        }
+      }
+    },
+    full_name: {
+      type: DataTypes.VIRTUAL,
+      get() {
+        return `${this.first_name} ${this.last_name}`;
       }
     }
   },
