@@ -8,6 +8,7 @@
     "rootDir": "./src",
     "strict": true,
     "esModuleInterop": true,
+    // Skip the library or the modules type checking when compiling
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "allowSyntheticDefaultImports": true,

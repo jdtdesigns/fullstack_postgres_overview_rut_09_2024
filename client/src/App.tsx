@@ -36,7 +36,7 @@ function App() {
     const title = titles[location.pathname];
 
     // Set the browser tab title when the location of the browser changes
-    document.title = title;
+    document.title = title || 'Page Not Found';
   }, [location]);
 
   return (
@@ -55,6 +55,10 @@ function App() {
         <Routes>
           <Route path="/" element={<Landing />} />
 
+          {/* 
+            These are conditional routes that will only load based on the state.user property being truthy or falsey 
+            I'm using a ternary expression - CONDITION ? IF TRUTHY : IF NOT TRUTHY
+          */}
           {state.user ? (
             <>
               <Route path="/shops" element={<UserShops />} />
@@ -68,6 +72,7 @@ function App() {
             </>
           )}
 
+          {/* Fallback route that shows a not found page if they visit a path that does not have a route above and/or they visit a user route and the state user property is null */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>

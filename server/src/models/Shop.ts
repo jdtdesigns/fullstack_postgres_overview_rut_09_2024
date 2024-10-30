@@ -32,6 +32,7 @@ Shop.init(
   },
 
   {
+    // This is the required client connection
     sequelize: client,
     tableName: 'shops',
     underscored: true

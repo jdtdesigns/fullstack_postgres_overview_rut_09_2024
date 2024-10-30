@@ -89,8 +89,13 @@ User.init(
         }
       }
     },
-    // Creates a virtual property that we can access when pulling a single user from the table
+    // Creates a virtual/custom property that we can access when pulling a single user from the table
     // This property will not be saved to the table, it is just an optional one that we can use
+    /* 
+    SELECT
+      CONCAT(first_name, ' ', last_name) AS full_name
+    FROM users
+    */
     full_name: {
       type: DataTypes.VIRTUAL,
       get() {

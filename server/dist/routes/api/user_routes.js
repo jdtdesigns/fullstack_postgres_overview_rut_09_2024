@@ -13,10 +13,12 @@ router.get('/shops/user', isAuthenticated, async (req, res) => {
     res.json(userShops);
 });
 // Create a shop
+// localhost:3333/api/shop
 router.post('/shop', isAuthenticated, async (req, res) => {
     try {
         await Shop.create({
             ...req.body,
+            // Never get the user's id from the client directly (ie. sending a user id through the req.body json object)
             user_id: req.user.id
         });
         res.json({
@@ -36,13 +38,13 @@ router.post('/wine', isAuthenticated, async (req, res) => {
     const userShop = await Shop.findOne({
         where: {
             user_id: req.user.id,
-            id: req.body.ShopId
+            id: req.body.shop_id
         }
     });
     // If we didn't find the shop then they are not the owner
     if (!userShop) {
         res.status(401).json({
-            message: 'Error in finding that shop. Please make sure the ShopId is correct and you are the owner.'
+            message: 'Error in finding that shop. Please make sure the shop_id is correct and you created the shop.'
         });
         return;
     }
@@ -69,7 +71,7 @@ router.delete('/shop', isAuthenticated, async (req, res) => {
     const userShop = await Shop.findOne({
         where: {
             user_id: req.user.id,
-            id: req.body.ShopId
+            id: req.body.shop_id
         }
     });
     // If we didn't find the shop then they are not the owner
@@ -83,7 +85,7 @@ router.delete('/shop', isAuthenticated, async (req, res) => {
         // Delete the shop row from the Shops table
         await Shop.destroy({
             where: {
-                id: req.body.ShopId
+                id: req.body.shop_id
             }
         });
         res.json({

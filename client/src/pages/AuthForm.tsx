@@ -45,6 +45,7 @@ function AuthForm(propsObj: {isLogin: boolean}) {
     
       setFormData(oldFormData => ({
         ...oldFormData,
+        // This is the property on the formData above
         error_message: error.response.data.message
       }));
     }

@@ -28,6 +28,7 @@ router.post('/register', async (req: Request, res: Response) => {
     if (error.errors) {
       res.status(403).json({
         user: null,
+        // This will give you the custom error message for the coresponding validation check in your User model
         message: error.errors[0].message
       });
     } else {
@@ -103,7 +104,7 @@ router.get('/user', async (req: Request, res: Response) => {
   if (userData && typeof userData !== 'string') {
     const user = await User.findByPk(userData.user_id);
 
-    res.json({ user });
+    res.json({ user: user });
     return;
   }
   
