@@ -16,7 +16,7 @@ function Landing() {
         <h1>Wine Shop Tracker</h1>
         <p>Your one stop <i>shop</i> for all of your wine shop tracking needs</p>
         <NavLink 
-          to={state.user ? '/api/shops/user' : '/register'} 
+          to={state.user ? '/shops' : '/register'} 
           className="btn btn-primary btn-lg px-5">
             {state.user ? 'View Your Shops!' : 'Start Now!'}
           </NavLink>

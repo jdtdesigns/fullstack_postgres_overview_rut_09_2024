@@ -56,10 +56,37 @@ async function seedWines() {
     // @ts-ignore
     await Wine.bulkCreate(wineData);
 }
+async function seedManagers() {
+    const users = await User.findAll();
+    const managerData = [];
+    const userData = [];
+    let amount = 5;
+    const getRandomUser = (isManager) => {
+        const randomUser = users[Math.floor(Math.random() * users.length)];
+        if (isManager) {
+            return managerData.includes(randomUser) ? getRandomUser(isManager) : randomUser;
+        }
+        return userData.includes(randomUser) ? getRandomUser(isManager) : randomUser;
+    };
+    while (amount--) {
+        const manager = getRandomUser(true);
+        const user = getRandomUser(false);
+        managerData.push(manager);
+        userData.push(user);
+    }
+    // @ts-ignore
+    for (const [index, user] of userData.entries()) {
+        const result = await user.update({
+            manager_id: managerData[index].id
+        });
+        console.log('RESULT', result);
+    }
+}
 try {
     await seedUsers();
     await seedShops();
     await seedWines();
+    await seedManagers();
     console.log('Tables seeded successfully!');
 }
 catch (error) {

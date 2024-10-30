@@ -67,7 +67,7 @@ router.post('/login', async (req: Request, res: Response) => {
     if (!valid_pass) {
       res.status(403).json({
         user: null,
-        message: 'Your password is invalid'
+        message: 'Your password is incorrect'
       });
       return;
     }

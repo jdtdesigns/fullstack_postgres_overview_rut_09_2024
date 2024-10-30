@@ -1,8 +1,9 @@
 import { NavLink } from 'react-router-dom';
-import { useStore } from '../store';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+
+import { useStore } from '../store';
 
 const initialFormData = {
   first_name: '',

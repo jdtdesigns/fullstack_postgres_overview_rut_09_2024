@@ -59,10 +59,12 @@ User.init({
         validate: {
             min: {
                 args: [21],
-                msg: 'You must be at least 21 years old to register an account'
+                msg: 'You must be at least 21 years old to make an account'
             }
         }
     },
+    // Creates a virtual property that we can access when pulling a single user from the table
+    // This property will not be saved to the table, it is just an optional one that we can use
     full_name: {
         type: DataTypes.VIRTUAL,
         get() {

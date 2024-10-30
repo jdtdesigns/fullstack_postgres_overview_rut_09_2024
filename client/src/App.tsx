@@ -1,4 +1,5 @@
-import {Routes, Route} from 'react-router-dom';
+import { useEffect } from 'react';
+import {Routes, Route, useLocation} from 'react-router-dom';
 import { useStore } from './store';
 
 import Header from './components/Header';
@@ -18,6 +19,25 @@ function App() {
   }
   
   const { state } = store;
+  const location = useLocation();
+
+  // Create an object of page titles to use for the browser tab
+  const titles: {[key: string]: string} = {
+    '/': 'Wine Tracker - Home',
+    '/register': 'Wine Tracker - Register',
+    '/login': 'Wine Tracker - Log In',
+    '/shops': 'Wine Tracker - View Shops',
+    '/shops/create': 'Wine Tracker - Create Shop',
+    '/wines/add': 'Wine Tracker - Add Wine',
+  };
+
+  useEffect(() => {
+    // Grab the corresponding title based on the current route - what comes after localhost:5173
+    const title = titles[location.pathname];
+
+    // Set the browser tab title when the location of the browser changes
+    document.title = title;
+  }, [location]);
 
   return (
     <>

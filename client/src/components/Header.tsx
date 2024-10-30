@@ -24,7 +24,7 @@ function Header() {
     }));
 
     navigate('/');
-  }
+  };
 
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -41,7 +41,7 @@ function Header() {
 
             {state.user ? (
               <>
-                <NavLink className="nav-link" to="/shops">View Your Shops</NavLink>
+                <NavLink className="nav-link" to="/shops">Your Shops</NavLink>
                 <NavLink className="nav-link" to="/shops/create">Create Shop</NavLink>
                 <NavLink className="nav-link" to="/wines/add">Add a Wine</NavLink>
                 <a onClick={logoutUser} className="nav-link" href="/auth/logout">Log Out</a>

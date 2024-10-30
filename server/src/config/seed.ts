@@ -71,10 +71,44 @@ async function seedWines() {
   await Wine.bulkCreate(wineData);
 }
 
+async function seedManagers() {
+  const users = await User.findAll();
+  const managerData: any = [];
+  const userData: any = [];
+  let amount = 5;
+
+  const getRandomUser = (isManager: boolean): any => {
+    const randomUser = users[Math.floor(Math.random() * users.length)];
+
+    if (isManager) {
+      return managerData.includes(randomUser) ? getRandomUser(isManager) : randomUser;
+    }
+
+    return userData.includes(randomUser) ? getRandomUser(isManager) : randomUser;
+  };
+
+  while (amount--) {
+    const manager = getRandomUser(true);
+    const user = getRandomUser(false);
+
+    managerData.push(manager);
+    userData.push(user);
+  }
+
+  // @ts-ignore
+  // A for of loop lets us run asynchronous code within the code block, whereas other loops (including forEach) do not
+  for (const [index, user] of userData.entries()) {
+    await user.update({
+      manager_id: managerData[index].id
+    });
+  }
+}
+
 try {
   await seedUsers();
   await seedShops();
   await seedWines();
+  await seedManagers();
 
   console.log('Tables seeded successfully!');
 } catch (error) {
