@@ -7,6 +7,7 @@ import Header from './components/Header';
 import Landing from './pages/Landing';
 import UserShops from './pages/UserShops';
 import ShopForm from './pages/ShopForm';
+import Shop from './pages/Shop';
 import WineForm from './pages/WineForm';
 import AuthForm from './pages/AuthForm';
 import NotFound from './pages/NotFound';
@@ -61,9 +62,10 @@ function App() {
           */}
           {state.user ? (
             <>
-              <Route path="/shops" element={<UserShops />} />
               <Route path="/shops/create" element={<ShopForm />} />
-              <Route path="/wines/add" element={<WineForm />} />              
+              <Route path="/shops" element={<UserShops />} />
+              <Route path="/shop/:shop_id" element={<Shop />} />
+              <Route path="/wine/add" element={<WineForm />} />              
             </>
           ) : (
             <>

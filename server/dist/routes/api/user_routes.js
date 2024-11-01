@@ -10,7 +10,29 @@ router.get('/shops/user', isAuthenticated, async (req, res) => {
             user_id: req.user.id
         }
     });
-    res.json(userShops);
+    res.json({ shops: userShops });
+});
+// Get a single shop
+router.get('/shop/:shop_id', isAuthenticated, async (req, res) => {
+    // Get all wines by shop id and also attach the user that created the shop
+    // We use the attributes property to specify the fields we want on the user
+    const shop = await Shop.findOne({
+        // Attach all associated wines for the shop
+        include: Wine,
+        where: {
+            id: req.params.shop_id,
+            user_id: req.user.id
+        }
+    });
+    if (!shop) {
+        res.status(403).json({
+            message: 'You can only view shops that you have created'
+        });
+        return;
+    }
+    res.json({
+        shop
+    });
 });
 // Create a shop
 // localhost:3333/api/shop
@@ -66,12 +88,12 @@ router.post('/wine', isAuthenticated, async (req, res) => {
     }
 });
 // Delete a shop
-router.delete('/shop', isAuthenticated, async (req, res) => {
+router.delete('/shop/:shop_id', isAuthenticated, async (req, res) => {
     // Find the shop using the logged in users's id and the ShopId provided through req.body from the client/browser
     const userShop = await Shop.findOne({
         where: {
             user_id: req.user.id,
-            id: req.body.shop_id
+            id: req.params.shop_id
         }
     });
     // If we didn't find the shop then they are not the owner
@@ -85,7 +107,7 @@ router.delete('/shop', isAuthenticated, async (req, res) => {
         // Delete the shop row from the Shops table
         await Shop.destroy({
             where: {
-                id: req.body.shop_id
+                id: req.params.shop_id
             }
         });
         res.json({

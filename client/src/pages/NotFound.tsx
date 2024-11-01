@@ -1,7 +1,8 @@
 function NotFound() {
   return (
-    <div className="py-5 ps-4">
-      <h1>Page Not Found :\</h1>
+    <div className="mt-5 text-center">
+      <img src="/images/notfound.png" alt="Broken Wine Glass" />
+      <h1 className="fw-light fst-italic">Whoops...</h1>
     </div>
   )
 }
