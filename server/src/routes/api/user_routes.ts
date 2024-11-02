@@ -62,6 +62,29 @@ router.post('/shop', isAuthenticated, async (req: Request, res: Response) => {
   }
 });
 
+// Edit shop
+router.put('/shop', isAuthenticated, async (req: Request, res: Response) => {
+  try {
+    await Shop.update({
+      ...req.body
+    }, {
+      where: {
+        id: Number(req.query.shop_id),
+        user_id: req.user.id
+      }
+    });
+
+    res.json({
+      message: 'Shop updated successfully!'
+    })
+  } catch (error) {
+    console.log('create shop error', error);
+    res.status(500).json({
+      message: 'There was a problem updating the shop'
+    });
+  }
+});
+
 // Add a wine to a shop
 router.post('/wine', isAuthenticated, async (req: Request, res: Response) => {
   // Find the shop using the logged in users's id and the ShopId provided through req.body from the client/browser

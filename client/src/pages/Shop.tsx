@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate, NavLink } from 'react-router-dom';
 
-// I alias the Shop interface 
+// I alias the Shop interface so I can use the Shop name
 import { Shop as ShopInterface } from '../interfaces';
 
 function Shop() {
@@ -10,7 +10,7 @@ function Shop() {
   const [message, setMessage] = useState('No wines have been added to this shop.');
   const params = useParams();
   const navigate = useNavigate();
-
+  
   useEffect(() => {
     axios.get(`/api/shop/${params.shop_id}`)
       .then(res => {
@@ -19,7 +19,6 @@ function Shop() {
       .catch(() => {
         setMessage('You are not the owner of this shop.')
       });
-    
   }, []);
 
   const deleteShop = async () => {
@@ -38,7 +37,9 @@ function Shop() {
             shop_id: shop.id,
             shop_name: shop.name
           }} className="btn btn-primary me-4">Add Wine</NavLink>
-        <button className="btn btn-warning me-4">Edit Shop</button>
+        <NavLink to="/shop/edit" state={{
+          shop: shop
+        }} className="btn btn-warning me-4">Edit Shop</NavLink>
         <button className="btn  btn-danger" data-bs-toggle="modal" data-bs-target="#delete-modal">Delete Shop</button>
       </div>
 

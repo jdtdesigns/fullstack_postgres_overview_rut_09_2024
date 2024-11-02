@@ -28,13 +28,26 @@ function App() {
     '/register': 'Wine Tracker - Register',
     '/login': 'Wine Tracker - Log In',
     '/shops': 'Wine Tracker - View Shops',
-    '/shops/create': 'Wine Tracker - Create Shop',
-    '/wines/add': 'Wine Tracker - Add Wine',
+    '/shop/create': 'Wine Tracker - Create Shop',
+    '/shop/edit': 'Wine Tracker - Edit Shop',
+    '/wine/add': 'Wine Tracker - Add Wine',
+  };
+
+  const getTitle = (path: string): string => {
+    if (path.startsWith('/shop/')) {
+      const route = path.split('/shop/')[1];
+      if (!isNaN(Number(route))) {
+        return `Wine Tracker - View Shop ${route}`;
+      } else {
+        return `Wine Tracker - ${route[0].toUpperCase()}${route.slice(1)} Shop`
+      }
+    }
+    return titles[path] || 'Page Not Found';
   };
 
   useEffect(() => {
     // Grab the corresponding title based on the current route - what comes after localhost:5173
-    const title = titles[location.pathname];
+    const title = getTitle(location.pathname);
 
     // Set the browser tab title when the location of the browser changes
     document.title = title || 'Page Not Found';
@@ -62,10 +75,11 @@ function App() {
           */}
           {state.user ? (
             <>
-              <Route path="/shops/create" element={<ShopForm />} />
+              <Route path="/shop/create" element={<ShopForm />} />
+              <Route path="/shop/edit" element={<ShopForm />} />
               <Route path="/shops" element={<UserShops />} />
               <Route path="/shop/:shop_id" element={<Shop />} />
-              <Route path="/wine/add" element={<WineForm />} />              
+              <Route path="/wine/add" element={<WineForm />} />             
             </>
           ) : (
             <>

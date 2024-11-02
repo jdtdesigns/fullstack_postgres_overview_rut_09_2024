@@ -42,7 +42,7 @@ function Header() {
             {state.user ? (
               <>
                 <NavLink className="nav-link" to="/shops" end>Your Shops</NavLink>
-                <NavLink className="nav-link" to="/shops/create">Create Shop</NavLink>
+                <NavLink className="nav-link" to="/shop/create">Create Shop</NavLink>
                 <a onClick={logoutUser} className="nav-link" href="/auth/logout">Log Out</a>
               </>
             ) : (
